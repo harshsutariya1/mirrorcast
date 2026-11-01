@@ -222,6 +222,8 @@ mirrorcast/
 ├── macos/                            ← macOS host app (entitlements, Info.plist, window)
 ├── test/                             ← app tests
 ├── packages/mirrorcast_engine/test/  ← engine API tests
+├── assets/brand/logo.png             ← in-app logo
+├── tool/brand/                       ← logo/icon source SVGs and the script that renders them
 └── docs/                             ← this guide, PROTOCOL.md, original spec
 ```
 
