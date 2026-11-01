@@ -178,9 +178,19 @@ Color latencyColor(ColorScheme scheme, double? ms) {
 
 /// A friendly empty/hero state with an icon, title and message.
 class HeroMessage extends StatelessWidget {
-  const HeroMessage({super.key, required this.icon, required this.title, required this.message, this.action});
+  const HeroMessage({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.message,
+    this.action,
+    this.showLogo = false,
+  });
 
   final IconData icon;
+
+  /// Shows the MirrorCast logo instead of [icon].
+  final bool showLogo;
   final String title;
   final String message;
   final Widget? action;
@@ -191,12 +201,18 @@ class HeroMessage extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 72,
-          height: 72,
-          decoration: BoxDecoration(color: theme.colorScheme.primaryContainer, borderRadius: BorderRadius.circular(22)),
-          child: Icon(icon, size: 36, color: theme.colorScheme.onPrimaryContainer),
-        ),
+        if (showLogo)
+          const AppLogo(size: 96)
+        else
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(22),
+            ),
+            child: Icon(icon, size: 36, color: theme.colorScheme.onPrimaryContainer),
+          ),
         const SizedBox(height: 20),
         Text(
           title,
@@ -214,6 +230,26 @@ class HeroMessage extends StatelessWidget {
         ),
         if (action != null) ...[const SizedBox(height: 20), action!],
       ],
+    );
+  }
+}
+
+/// The MirrorCast logo (same artwork as the app icon; source in tool/brand/).
+class AppLogo extends StatelessWidget {
+  const AppLogo({super.key, this.size = 32});
+
+  static const asset = 'assets/brand/logo.png';
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      asset,
+      width: size,
+      height: size,
+      filterQuality: FilterQuality.medium,
+      semanticLabel: 'MirrorCast logo',
     );
   }
 }

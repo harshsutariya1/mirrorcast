@@ -50,7 +50,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MirrorCast'),
+        title: const Row(children: [AppLogo(size: 30), SizedBox(width: 10), Text('MirrorCast')]),
         actions: [
           IconButton(
             tooltip: 'Settings',

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MirrorCast brand gradient (indigo to violet), matching the macOS icon. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:startColor="#7C83FF"
+        android:centerColor="#5B4CF0"
+        android:endColor="#7A3FE0"
+        android:type="linear" />
+</shape>

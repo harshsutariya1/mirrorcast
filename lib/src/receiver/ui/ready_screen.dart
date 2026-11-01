@@ -58,6 +58,7 @@ class _ReadyScreenState extends ConsumerState<ReadyScreen> {
               children: [
                 Center(
                   child: HeroMessage(
+                    showLogo: true,
                     icon: Icons.cast_connected_rounded,
                     title: 'Ready to mirror',
                     message: 'Open MirrorCast on your Android phone and tap "${info.receiverName}".',
