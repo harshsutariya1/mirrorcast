@@ -96,6 +96,10 @@ phone                                   Mac
   |--- BYE / <-- BYE ----------------------|
 ```
 
+**Ordering rule:** `WELCOME` (or `REJECT`) is always the first packet the Mac
+sends on a connection. The phone treats anything else before it as a protocol
+error, so the Mac starts its `PING`s only after `WELCOME` has been sent.
+
 If the connection drops without a `BYE`, the phone retries every second for up
 to 20 seconds while capture keeps running. On reconnect it sends `VIDEO_FORMAT`
 and `AUDIO_STATE` again and requests a keyframe.

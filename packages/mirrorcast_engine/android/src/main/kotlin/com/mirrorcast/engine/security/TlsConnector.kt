@@ -82,7 +82,10 @@ class TlsConnector(private val identity: Identity) {
             raw.tcpNoDelay = true // never wait to coalesce small packets
             raw.keepAlive = true
             raw.trafficClass = 0xB8 // DSCP EF (expedited forwarding), honoured by some routers
-            raw.sendBufferSize = 512 * 1024
+            // A modest send buffer keeps the queue in *our* PacketSender, where
+            // stale video can be dropped, instead of hidden in the kernel where it
+            // would turn into delay. 128 KiB is ~85 ms at 12 Mbps.
+            raw.sendBufferSize = 128 * 1024
             raw.connect(InetSocketAddress(host, port), connectTimeoutMs)
             raw.soTimeout = HANDSHAKE_TIMEOUT_MS
 

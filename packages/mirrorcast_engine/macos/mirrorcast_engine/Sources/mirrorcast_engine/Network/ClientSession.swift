@@ -8,8 +8,11 @@ protocol ClientSessionHost: AnyObject {
     var pairing: PairingCoordinator { get }
     var trustStore: TrustedDeviceStore { get }
 
-    /// Returns nil to accept the stream, or the reason to refuse it.
+    /// Returns nil to accept the stream, or the reason to refuse it. Must not
+    /// send anything to the phone: WELCOME has to be the first packet it gets.
     func sessionWantsToStream(_ session: ClientSession) -> RejectCode?
+    /// Called right after WELCOME was sent; from here on the Mac may send PINGs etc.
+    func sessionDidStartStreaming(_ session: ClientSession)
     func session(_ session: ClientSession, didReceive packet: Packet)
     func sessionDidPair(_ session: ClientSession)
     func sessionPairingFailed(_ session: ClientSession, reason: String)
@@ -165,7 +168,9 @@ final class ClientSession {
             }
             timeout?.cancel()
             mode = .streaming
+            // WELCOME must be the first packet the phone receives.
             send(.welcome, welcome)
+            host.sessionDidStartStreaming(self)
 
         case .pairPin, .pairQr:
             guard let credential = host.pairing.beginAttempt(id) else {

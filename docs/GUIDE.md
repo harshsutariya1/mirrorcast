@@ -558,6 +558,7 @@ cd packages/mirrorcast_engine && flutter test
 | **Mac doesn't appear on the phone** | Same Wi-Fi? Guest networks and "AP/client isolation" block Bonjour; use *Enter address* or USB. On macOS 15+, allow MirrorCast under *System Settings → Privacy & Security → Local Network* |
 | **"This Mac's identity changed or it isn't paired"** | The Mac app was reinstalled or its keychain item was deleted, so it has a new identity. Forget it on the phone and pair again |
 | **"This Mac doesn't trust this phone anymore"** | The phone was removed on the Mac. Pair again |
+| **"Unexpected data from the Mac (…)"** | The phone and Mac apps come from different versions. Pull the latest code and rebuild **both** (`flutter run -d macos` and `flutter run -d <phone>`) |
 | **"The Mac is already mirroring another phone"** | Stop the other phone first (one stream at a time) |
 | **Stutters or high latency** | Use 5 GHz Wi-Fi or USB, move closer to the router, or pick *Ultra-low latency* |
 | **No sound on the Mac** | Check *Sound plays on: Mac*, and that the Mac isn't muted (⇧⌘M). Some apps block capture (DRM). If the phone speaker setting silences the stream on your phone model, turn off *Mute phone speaker* |

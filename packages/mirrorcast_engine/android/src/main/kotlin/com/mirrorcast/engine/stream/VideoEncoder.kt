@@ -153,7 +153,18 @@ class VideoEncoder(
         try {
             while (running) {
                 val index = codec.dequeueOutputBuffer(info, DEQUEUE_TIMEOUT_US)
-                if (index < 0) continue // INFO_TRY_AGAIN_LATER / FORMAT_CHANGED: nothing to send
+                if (index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                    // Some encoders never emit a CODEC_CONFIG buffer and only publish the
+                    // parameter sets here (csd-0/csd-1). Forward them so the Mac can decode.
+                    if (codecConfig == null) {
+                        configFromFormat(codec.outputFormat)?.let { config ->
+                            codecConfig = config
+                            sink.onVideoConfig(config, 0L)
+                        }
+                    }
+                    continue
+                }
+                if (index < 0) continue // INFO_TRY_AGAIN_LATER: nothing to send yet
 
                 val buffer = codec.getOutputBuffer(index)
                 if (buffer != null && info.size > 0) {
@@ -177,6 +188,23 @@ class VideoEncoder(
             // IllegalStateException is expected while stop() tears the codec down.
             if (running) sink.onEncoderError(e)
         }
+    }
+
+    /** Joins csd-0/1/2 into one Annex-B buffer (adding start codes where missing). */
+    private fun configFromFormat(format: MediaFormat): ByteArray? {
+        val out = java.io.ByteArrayOutputStream()
+        for (key in listOf("csd-0", "csd-1", "csd-2")) {
+            val buffer = format.getByteBuffer(key) ?: continue
+            val bytes = ByteArray(buffer.remaining())
+            buffer.duplicate().get(bytes)
+            if (bytes.isEmpty()) continue
+            val hasStartCode = bytes.size > 4 &&
+                bytes[0].toInt() == 0 && bytes[1].toInt() == 0 &&
+                (bytes[2].toInt() == 1 || (bytes[2].toInt() == 0 && bytes[3].toInt() == 1))
+            if (!hasStartCode) out.write(byteArrayOf(0, 0, 0, 1))
+            out.write(bytes)
+        }
+        return out.toByteArray().takeIf { it.isNotEmpty() }
     }
 
     companion object {

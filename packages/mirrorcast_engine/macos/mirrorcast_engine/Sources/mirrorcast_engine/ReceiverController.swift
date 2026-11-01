@@ -186,8 +186,12 @@ final class ReceiverController: ClientSessionHost {
         }
         streamingSession = session
         trustStore.markSeen(session.peerFingerprintHex, name: session.deviceName, model: session.model)
-        beginStream(for: session)
         return nil
+    }
+
+    func sessionDidStartStreaming(_ session: ClientSession) {
+        guard session === streamingSession else { return }
+        beginStream(for: session)
     }
 
     func session(_ session: ClientSession, didReceive packet: Packet) {

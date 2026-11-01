@@ -49,7 +49,8 @@ class EngineException(val code: String, message: String, cause: Throwable? = nul
                 is ConnectException, is NoRouteToHostException, is UnknownHostException ->
                     EngineException("unreachable", "Couldn't reach the Mac. Is MirrorCast open on it and on the same network?", error)
                 is SSLException -> EngineException("tls_failed", "Secure connection failed: ${error.message}", error)
-                is ProtocolException -> EngineException("protocol_error", "Unexpected data from the Mac.", error)
+                is ProtocolException ->
+                    EngineException("protocol_error", "Unexpected data from the Mac (${error.message}). Update both apps.", error)
                 is EOFException -> EngineException("disconnected", "The Mac closed the connection.", error)
                 is SecurityException -> EngineException("permission_denied", error.message ?: "Permission denied.", error)
                 is IOException -> EngineException("network", error.message ?: "Network error.", error)
