@@ -7,7 +7,9 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
+  # Flutter 3.47+ is required: Material Design lives in package:material_ui from 3.47 on.
   sdk: ^3.13.7
+  flutter: '>=3.47.0'
 
 dependencies:
   flutter:

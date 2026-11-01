@@ -55,7 +55,7 @@ Mac, record the stream, or mirror several phones at once.
 | Phone | Android **10 or newer** (needed to capture other apps' audio) |
 | Mac | macOS **13 Ventura or newer**, Apple Silicon or Intel |
 | Network | Both on the same Wi-Fi (5 GHz recommended), **or** a USB cable |
-| Tools | Flutter (stable), Xcode, Android SDK. Optional: `adb` for USB mode |
+| Tools | **Flutter 3.47 or newer** (Dart 3.13+; run `flutter upgrade`), Xcode, Android SDK. Optional: `adb` for USB mode |
 
 ### Build and run
 
@@ -554,6 +554,7 @@ cd packages/mirrorcast_engine && flutter test
 
 | Symptom | Fix |
 | --- | --- |
+| **`flutter pub get`: "requires SDK version ^3.13.7"** | Your Flutter is older than 3.47. Run `flutter upgrade`, then `flutter pub get` again |
 | **Mac doesn't appear on the phone** | Same Wi-Fi? Guest networks and "AP/client isolation" block Bonjour; use *Enter address* or USB. On macOS 15+, allow MirrorCast under *System Settings → Privacy & Security → Local Network* |
 | **"This Mac's identity changed or it isn't paired"** | The Mac app was reinstalled or its keychain item was deleted, so it has a new identity. Forget it on the phone and pair again |
 | **"This Mac doesn't trust this phone anymore"** | The phone was removed on the Mac. Pair again |

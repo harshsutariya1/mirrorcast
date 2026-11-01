@@ -28,7 +28,7 @@ flutter run -d <android-device-id>
 On the Mac click **Pair new phone**. On the phone, tap the Mac and enter the
 code (or scan the QR code), then tap **Mirror**.
 
-Requirements: Android 10+, macOS 13+ (Apple Silicon or Intel), Flutter stable, Xcode, Android SDK.
+Requirements: Android 10+, macOS 13+ (Apple Silicon or Intel), **Flutter 3.47 or newer** (run `flutter upgrade`), Xcode, Android SDK.
 
 ## Documentation
 
